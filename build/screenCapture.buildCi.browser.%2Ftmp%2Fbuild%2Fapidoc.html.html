@@ -1,0 +1,501 @@
+<html><head></head><body><div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a href="https://github.com/JamieMason/shrinkpack">shrinkpack (v0.18.1)</a>
+</h1>
+<h4>Fast, resilient, reproducible builds with npm install.</h4>
+<div class="apidocSectionDiv"><a href="#apidoc.tableOfContents" id="apidoc.tableOfContents"><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.shrinkpack">module shrinkpack</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.shrinkpack.analyse">
+            function <span class="apidocSignatureSpan">shrinkpack.</span>analyse
+            <span class="apidocSignatureSpan">(options)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.shrinkpack.cli">
+            function <span class="apidocSignatureSpan">shrinkpack.</span>cli
+            <span class="apidocSignatureSpan">(options)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.shrinkpack.update">
+            function <span class="apidocSignatureSpan">shrinkpack.</span>update
+            <span class="apidocSignatureSpan">(config)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.shrinkpack.analyse">module shrinkpack.analyse</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.shrinkpack.analyse.analyse">
+            function <span class="apidocSignatureSpan">shrinkpack.</span>analyse
+            <span class="apidocSignatureSpan">(options)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.shrinkpack.cli">module shrinkpack.cli</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.shrinkpack.cli.cli">
+            function <span class="apidocSignatureSpan">shrinkpack.</span>cli
+            <span class="apidocSignatureSpan">(options)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.shrinkpack.update">module shrinkpack.update</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.shrinkpack.update.update">
+            function <span class="apidocSignatureSpan">shrinkpack.</span>update
+            <span class="apidocSignatureSpan">(config)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.shrinkpack" id="apidoc.module.shrinkpack">module shrinkpack</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.shrinkpack.analyse" id="apidoc.element.shrinkpack.analyse">
+        function <span class="apidocSignatureSpan">shrinkpack.</span>analyse
+        <span class="apidocSignatureSpan">(options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function init(options) {
+  return when({options: options, startTime: new Date()})
+    .then(getConfigWithPaths)
+    .then(getConfigWithGraph)
+    .then(handleOptionalDependencies)
+    .then(ensureBundleExists)
+    .then(getConfigWithNpmCacheContents)
+    .then(getConfigWithBundleContents)
+    .then(getConfigWithDependencies)
+    .then(getConfigWithUnusedDependencies)
+    .then(getConfigWithStats);
+
+  function getConfigWithPaths(config) {
+    return getPaths(config.options.directory)
+      .then(function (paths) {
+        return assign(config, {path: paths});
+      });
+  }
+
+  function getConfigWithGraph(config) {
+    return getGraph(config.path.graph)
+      .then(function (graph) {
+        return assign(config, {graph: graph});
+      });
+  }
+
+  function handleOptionalDependencies(config) {
+    return pruneOptionalDependencies(config)
+      .then(function (graph) {
+        return assign(config, {graph: graph});
+      });
+  }
+
+  function ensureBundleExists(config) {
+    return createBundleDirectory(config.path.shrinkpack)
+      .then(function () {
+        return config;
+      });
+  }
+
+  function getConfigWithNpmCacheContents(config) {
+    return readNpmCache(config.path.npmCache)
+      .then(function (npmCache) {
+        return assign(config, {npmCache: npmCache});
+      });
+  }
+
+  function getConfigWithBundleContents(config) {
+    return readBundle(config.path.shrinkpack)
+      .then(function (bundle) {
+        return assign(config, {bundle: bundle});
+      });
+  }
+
+  function getConfigWithDependencies(config) {
+    return getDependencies(config)
+      .then(function (deps) {
+        return assign(config, {deps: deps});
+      });
+  }
+
+  function getConfigWithUnusedDependencies(config) {
+    return getUnusedDependencies(config)
+      .then(function (unusedDependencies) {
+        return assign(config, {unusedDependencies: unusedDependencies});
+      });
+  }
+
+  function getConfigWithStats(config) {
+    return getStats(config)
+      .then(function (stats) {
+        return assign(config, {stats: stats});
+      });
+  }
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+1. Analyse the project and gather all the diffing information between the file system and the shrinkwrap.
+2. Use the diffing information to bring the file system in sync with the shrinkwrap.
+
+```js
+var shrinkpack = require('shrinkpack');
+
+shrinkpack.<span class="apidocCodeKeywordSpan">analyse</span>({ compress: false, directory: process.cwd(), keepOptional: false })
+  .then(data =&gt; shrinkpack.update(data));
+```
+
+Or to run `shrinkpack` in full, including all the additional logging that you see when using the CLI.
+
+```js
+var shrinkpack = require('shrinkpack');
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.shrinkpack.cli" id="apidoc.element.shrinkpack.cli">
+        function <span class="apidocSignatureSpan">shrinkpack.</span>cli
+        <span class="apidocSignatureSpan">(options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function runCli(options) {
+  return analyse(options)
+    .then(update, onFail)
+    .then(displaySummary, onFail)
+    .catch(onFail);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+```
+
+Or to run `shrinkpack` in full, including all the additional logging that you see when using the CLI.
+
+```js
+var shrinkpack = require('shrinkpack');
+
+shrinkpack.<span class="apidocCodeKeywordSpan">cli</span>({ compress: false, directory: process.cwd(), keepOptional: false })
+  .then(() =&gt; {});
+```
+
+## Target Problem
+
+On most projects I've worked on we've had a [Jenkins](http://jenkins-ci.org/) (or similiar)
+continuous integration environment, where we would run tests, analyse code, gather metrics, and
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.shrinkpack.update" id="apidoc.element.shrinkpack.update">
+        function <span class="apidocSignatureSpan">shrinkpack.</span>update
+        <span class="apidocSignatureSpan">(config)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function update(config) {
+  return when.join(
+    addUsedDependencies(config),
+    deleteUnusedDependencies(config)
+  ).then(function () {
+    return rewriteGraph(config);
+  }).then(function () {
+    return config;
+  });
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+1. Analyse the project and gather all the diffing information between the file system and the shrinkwrap.
+2. Use the diffing information to bring the file system in sync with the shrinkwrap.
+
+```js
+var shrinkpack = require('shrinkpack');
+
+shrinkpack.analyse({ compress: false, directory: process.cwd(), keepOptional: false })
+  .then(data =&gt; shrinkpack.<span class="apidocCodeKeywordSpan">update</span>(data));
+```
+
+Or to run `shrinkpack` in full, including all the additional logging that you see when using the CLI.
+
+```js
+var shrinkpack = require('shrinkpack');
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.shrinkpack.analyse" id="apidoc.module.shrinkpack.analyse">module shrinkpack.analyse</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.shrinkpack.analyse.analyse" id="apidoc.element.shrinkpack.analyse.analyse">
+        function <span class="apidocSignatureSpan">shrinkpack.</span>analyse
+        <span class="apidocSignatureSpan">(options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function init(options) {
+  return when({options: options, startTime: new Date()})
+    .then(getConfigWithPaths)
+    .then(getConfigWithGraph)
+    .then(handleOptionalDependencies)
+    .then(ensureBundleExists)
+    .then(getConfigWithNpmCacheContents)
+    .then(getConfigWithBundleContents)
+    .then(getConfigWithDependencies)
+    .then(getConfigWithUnusedDependencies)
+    .then(getConfigWithStats);
+
+  function getConfigWithPaths(config) {
+    return getPaths(config.options.directory)
+      .then(function (paths) {
+        return assign(config, {path: paths});
+      });
+  }
+
+  function getConfigWithGraph(config) {
+    return getGraph(config.path.graph)
+      .then(function (graph) {
+        return assign(config, {graph: graph});
+      });
+  }
+
+  function handleOptionalDependencies(config) {
+    return pruneOptionalDependencies(config)
+      .then(function (graph) {
+        return assign(config, {graph: graph});
+      });
+  }
+
+  function ensureBundleExists(config) {
+    return createBundleDirectory(config.path.shrinkpack)
+      .then(function () {
+        return config;
+      });
+  }
+
+  function getConfigWithNpmCacheContents(config) {
+    return readNpmCache(config.path.npmCache)
+      .then(function (npmCache) {
+        return assign(config, {npmCache: npmCache});
+      });
+  }
+
+  function getConfigWithBundleContents(config) {
+    return readBundle(config.path.shrinkpack)
+      .then(function (bundle) {
+        return assign(config, {bundle: bundle});
+      });
+  }
+
+  function getConfigWithDependencies(config) {
+    return getDependencies(config)
+      .then(function (deps) {
+        return assign(config, {deps: deps});
+      });
+  }
+
+  function getConfigWithUnusedDependencies(config) {
+    return getUnusedDependencies(config)
+      .then(function (unusedDependencies) {
+        return assign(config, {unusedDependencies: unusedDependencies});
+      });
+  }
+
+  function getConfigWithStats(config) {
+    return getStats(config)
+      .then(function (stats) {
+        return assign(config, {stats: stats});
+      });
+  }
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+1. Analyse the project and gather all the diffing information between the file system and the shrinkwrap.
+2. Use the diffing information to bring the file system in sync with the shrinkwrap.
+
+```js
+var shrinkpack = require('shrinkpack');
+
+shrinkpack.<span class="apidocCodeKeywordSpan">analyse</span>({ compress: false, directory: process.cwd(), keepOptional: false })
+  .then(data =&gt; shrinkpack.update(data));
+```
+
+Or to run `shrinkpack` in full, including all the additional logging that you see when using the CLI.
+
+```js
+var shrinkpack = require('shrinkpack');
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.shrinkpack.cli" id="apidoc.module.shrinkpack.cli">module shrinkpack.cli</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.shrinkpack.cli.cli" id="apidoc.element.shrinkpack.cli.cli">
+        function <span class="apidocSignatureSpan">shrinkpack.</span>cli
+        <span class="apidocSignatureSpan">(options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function runCli(options) {
+  return analyse(options)
+    .then(update, onFail)
+    .then(displaySummary, onFail)
+    .catch(onFail);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+```
+
+Or to run `shrinkpack` in full, including all the additional logging that you see when using the CLI.
+
+```js
+var shrinkpack = require('shrinkpack');
+
+shrinkpack.<span class="apidocCodeKeywordSpan">cli</span>({ compress: false, directory: process.cwd(), keepOptional: false })
+  .then(() =&gt; {});
+```
+
+## Target Problem
+
+On most projects I've worked on we've had a [Jenkins](http://jenkins-ci.org/) (or similiar)
+continuous integration environment, where we would run tests, analyse code, gather metrics, and
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.shrinkpack.update" id="apidoc.module.shrinkpack.update">module shrinkpack.update</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.shrinkpack.update.update" id="apidoc.element.shrinkpack.update.update">
+        function <span class="apidocSignatureSpan">shrinkpack.</span>update
+        <span class="apidocSignatureSpan">(config)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function update(config) {
+  return when.join(
+    addUsedDependencies(config),
+    deleteUnusedDependencies(config)
+  ).then(function () {
+    return rewriteGraph(config);
+  }).then(function () {
+    return config;
+  });
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+1. Analyse the project and gather all the diffing information between the file system and the shrinkwrap.
+2. Use the diffing information to bring the file system in sync with the shrinkwrap.
+
+```js
+var shrinkpack = require('shrinkpack');
+
+shrinkpack.analyse({ compress: false, directory: process.cwd(), keepOptional: false })
+  .then(data =&gt; shrinkpack.<span class="apidocCodeKeywordSpan">update</span>(data));
+```
+
+Or to run `shrinkpack` in full, including all the additional logging that you see when using the CLI.
+
+```js
+var shrinkpack = require('shrinkpack');
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
+</body></html>
