@@ -81,6 +81,144 @@
 
         </li>
 
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">shrinkpack.</span>child_process</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">shrinkpack.</span>fs</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">shrinkpack.</span>index</span>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.shrinkpack.child_process">module shrinkpack.child_process</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.shrinkpack.child_process.exec">
+            function <span class="apidocSignatureSpan">shrinkpack.child_process.</span>exec
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.shrinkpack.child_process.spawn">
+            function <span class="apidocSignatureSpan">shrinkpack.child_process.</span>spawn
+            <span class="apidocSignatureSpan">(cmd, args, opts)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.shrinkpack.fs">module shrinkpack.fs</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.shrinkpack.fs.createReadStream">
+            function <span class="apidocSignatureSpan">shrinkpack.fs.</span>createReadStream
+            <span class="apidocSignatureSpan">(path, options)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.shrinkpack.fs.createWriteStream">
+            function <span class="apidocSignatureSpan">shrinkpack.fs.</span>createWriteStream
+            <span class="apidocSignatureSpan">(path, options)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.shrinkpack.fs.mkdir">
+            function <span class="apidocSignatureSpan">shrinkpack.fs.</span>mkdir
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.shrinkpack.fs.readFile">
+            function <span class="apidocSignatureSpan">shrinkpack.fs.</span>readFile
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.shrinkpack.fs.readdir">
+            function <span class="apidocSignatureSpan">shrinkpack.fs.</span>readdir
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.shrinkpack.fs.unlink">
+            function <span class="apidocSignatureSpan">shrinkpack.fs.</span>unlink
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.shrinkpack.fs.writeFile">
+            function <span class="apidocSignatureSpan">shrinkpack.fs.</span>writeFile
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.shrinkpack.index">module shrinkpack.index</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.shrinkpack.index.analyse">
+            function <span class="apidocSignatureSpan">shrinkpack.index.</span>analyse
+            <span class="apidocSignatureSpan">(options)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.shrinkpack.index.cli">
+            function <span class="apidocSignatureSpan">shrinkpack.index.</span>cli
+            <span class="apidocSignatureSpan">(options)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.shrinkpack.index.update">
+            function <span class="apidocSignatureSpan">shrinkpack.index.</span>update
+            <span class="apidocSignatureSpan">(config)</span>
+            </a>
+
+        </li>
+
     </ol></li>
 
 </ol></div>
@@ -229,6 +367,588 @@ continuous integration environment, where we would run tests, analyse code, gath
     <h2>
         <a href="#apidoc.element.shrinkpack.update" id="apidoc.element.shrinkpack.update">
         function <span class="apidocSignatureSpan">shrinkpack.</span>update
+        <span class="apidocSignatureSpan">(config)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function update(config) {
+  return when.join(
+    addUsedDependencies(config),
+    deleteUnusedDependencies(config)
+  ).then(function () {
+    return rewriteGraph(config);
+  }).then(function () {
+    return config;
+  });
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+1. Analyse the project and gather all the diffing information between the file system and the shrinkwrap.
+2. Use the diffing information to bring the file system in sync with the shrinkwrap.
+
+```js
+var shrinkpack = require('shrinkpack');
+
+shrinkpack.analyse({ compress: false, directory: process.cwd(), keepOptional: false })
+  .then(data =&gt; shrinkpack.<span class="apidocCodeKeywordSpan">update</span>(data));
+```
+
+Or to run `shrinkpack` in full, including all the additional logging that you see when using the CLI.
+
+```js
+var shrinkpack = require('shrinkpack');
+...</pre></li>
+    </ul>
+
+
+
+
+
+
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.shrinkpack.child_process" id="apidoc.module.shrinkpack.child_process">module shrinkpack.child_process</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.shrinkpack.child_process.exec" id="apidoc.element.shrinkpack.child_process.exec">
+        function <span class="apidocSignatureSpan">shrinkpack.child_process.</span>exec
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">exec = function () {
+			var args = slice.call(arguments);
+
+			return when(condition()).withThis(this).then(function(exit) {
+				return when(f.apply(this, args))['finally'](exit);
+			});
+		}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+var childProcess = require('../lib/child-process');
+
+// public
+module.exports = getPaths;
+
+// implementation
+function getPaths(directory) {
+return childProcess.<span class="apidocCodeKeywordSpan">exec</span>('npm config get cache', {encoding: 'utf8'
+;})
+  .then(onSuccess, onError);
+
+function onSuccess(result) {
+  return {
+    graph: path.join(directory, 'npm-shrinkwrap.json'),
+    manifest: path.join(directory, 'package.json'),
+    npmCache: result.stdout,
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.shrinkpack.child_process.spawn" id="apidoc.element.shrinkpack.child_process.spawn">
+        function <span class="apidocSignatureSpan">shrinkpack.child_process.</span>spawn
+        <span class="apidocSignatureSpan">(cmd, args, opts)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">(cmd, args, opts) =&gt; {
+	let joinedCmd = cmd;
+
+	if (Array.isArray(args) &amp;&amp; args.length &gt; 0) {
+		joinedCmd += ' ' + args.join(' ');
+	}
+
+	const parsed = handleArgs(cmd, args, opts);
+	const encoding = parsed.opts.encoding;
+	const maxBuffer = parsed.opts.maxBuffer;
+
+	let spawned;
+	try {
+		spawned = childProcess.spawn(parsed.cmd, parsed.args, parsed.opts);
+	} catch (err) {
+		return Promise.reject(err);
+	}
+
+	let removeExitHandler;
+	if (parsed.opts.cleanup) {
+		removeExitHandler = onExit(() =&gt; {
+			spawned.kill();
+		});
+	}
+
+	const promise = Promise.all([
+		processDone(spawned),
+		getStream(spawned, 'stdout', encoding, maxBuffer),
+		getStream(spawned, 'stderr', encoding, maxBuffer)
+	]).then(arr =&gt; {
+		const result = arr[0];
+		const stdout = arr[1];
+		const stderr = arr[2];
+
+		let err = result.err;
+		const code = result.code;
+		const signal = result.signal;
+
+		if (removeExitHandler) {
+			removeExitHandler();
+		}
+
+		if (err || code !== 0 || signal !== null) {
+			if (!err) {
+				err = new Error(`Command failed: ${joinedCmd}\n${stderr}${stdout}`);
+				err.code = code &lt; 0 ? errname(code) : code;
+			}
+
+			// TODO: missing some timeout logic for killed
+			// https://github.com/nodejs/node/blob/master/lib/child_process.js#L203
+			// err.killed = spawned.killed || killed;
+			err.killed = err.killed || spawned.killed;
+
+			err.stdout = stdout;
+			err.stderr = stderr;
+			err.failed = true;
+			err.signal = signal || null;
+			err.cmd = joinedCmd;
+
+			if (!parsed.opts.reject) {
+				return err;
+			}
+
+			throw err;
+		}
+
+		return {
+			stdout: handleOutput(parsed.opts, stdout),
+			stderr: handleOutput(parsed.opts, stderr),
+			code: 0,
+			failed: false,
+			killed: false,
+			signal: null,
+			cmd: joinedCmd
+		};
+	});
+
+	crossSpawn._enoent.hookChildProcess(spawned, parsed);
+
+	handleInput(spawned, parsed.opts);
+
+	spawned.then = promise.then.bind(promise);
+	spawned.catch = promise.catch.bind(promise);
+
+	return spawned;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+.then(toArray)
+.then(getPackages)
+.then(indexByPath);
+
+  function getCacheContents() {
+var allData = '';
+var deferred = when.defer();
+var npmCache = childProcess.<span class="apidocCodeKeywordSpan">spawn</span>('npm', ['cache', 'ls']);
+
+npmCache.stdout.setEncoding('utf8');
+npmCache.stdout.on('data', onData);
+npmCache.on('close', onClose);
+
+return deferred.promise;
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.shrinkpack.fs" id="apidoc.module.shrinkpack.fs">module shrinkpack.fs</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.shrinkpack.fs.createReadStream" id="apidoc.element.shrinkpack.fs.createReadStream">
+        function <span class="apidocSignatureSpan">shrinkpack.fs.</span>createReadStream
+        <span class="apidocSignatureSpan">(path, options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function createReadStream(path, options) {
+  return new ReadStream(path, options)
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+// public
+module.exports = rateLimit(copyFile);
+
+// implementation
+function copyFile(source, target) {
+  return when.promise(function (resolve, reject) {
+var gunzip$;
+var read$ = fs.<span class="apidocCodeKeywordSpan">createReadStream</span>(source);
+var write$ = fs.createWriteStream(target);
+
+read$.on('error', onReadError);
+write$.on('error', onWriteError);
+write$.on('finish', onWriteEnd);
+
+if (isCompressed()) {
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.shrinkpack.fs.createWriteStream" id="apidoc.element.shrinkpack.fs.createWriteStream">
+        function <span class="apidocSignatureSpan">shrinkpack.fs.</span>createWriteStream
+        <span class="apidocSignatureSpan">(path, options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function createWriteStream(path, options) {
+  return new WriteStream(path, options)
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+module.exports = rateLimit(copyFile);
+
+// implementation
+function copyFile(source, target) {
+  return when.promise(function (resolve, reject) {
+var gunzip$;
+var read$ = fs.createReadStream(source);
+var write$ = fs.<span class="apidocCodeKeywordSpan">createWriteStream</span>(target);
+
+read$.on('error', onReadError);
+write$.on('error', onWriteError);
+write$.on('finish', onWriteEnd);
+
+if (isCompressed()) {
+  read$.pipe(write$);
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.shrinkpack.fs.mkdir" id="apidoc.element.shrinkpack.fs.mkdir">
+        function <span class="apidocSignatureSpan">shrinkpack.fs.</span>mkdir
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">mkdir = function () {
+			var args = slice.call(arguments);
+
+			return when(condition()).withThis(this).then(function(exit) {
+				return when(f.apply(this, args))['finally'](exit);
+			});
+		}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+var fs = require('../lib/fs');
+
+// public
+module.exports = createBundleDirectory;
+
+// implementation
+function createBundleDirectory(location) {
+return fs.<span class="apidocCodeKeywordSpan">mkdir</span>(location)
+  .then(onSuccess, onError);
+
+function onSuccess() {
+  return location;
+}
+
+function onError(err) {
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.shrinkpack.fs.readFile" id="apidoc.element.shrinkpack.fs.readFile">
+        function <span class="apidocSignatureSpan">shrinkpack.fs.</span>readFile
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">readFile = function () {
+			var args = slice.call(arguments);
+
+			return when(condition()).withThis(this).then(function(exit) {
+				return when(f.apply(this, args))['finally'](exit);
+			});
+		}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+var fs = require('../lib/fs');
+
+// public
+module.exports = getGraph;
+
+// implementation
+function getGraph(location) {
+return fs.<span class="apidocCodeKeywordSpan">readFile</span>(location, {encoding: 'utf8'})
+  .then(onSuccess, onError);
+
+function onSuccess(graph) {
+  return JSON.parse(graph);
+}
+
+function onError() {
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.shrinkpack.fs.readdir" id="apidoc.element.shrinkpack.fs.readdir">
+        function <span class="apidocSignatureSpan">shrinkpack.fs.</span>readdir
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">readdir = function () {
+			var args = slice.call(arguments);
+
+			return when(condition()).withThis(this).then(function(exit) {
+				return when(f.apply(this, args))['finally'](exit);
+			});
+		}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+var fs = require('../lib/fs');
+
+// public
+module.exports = readBundle;
+
+// implementation
+function readBundle(pathToBundle) {
+return fs.<span class="apidocCodeKeywordSpan">readdir</span>(pathToBundle)
+  .then(indexByPath, onError);
+
+function indexByPath(filenames) {
+  return filenames.reduce(function (memo, filename) {
+    memo[getAbsolutePath(filename)] = true;
+    return memo;
+  }, {});
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.shrinkpack.fs.unlink" id="apidoc.element.shrinkpack.fs.unlink">
+        function <span class="apidocSignatureSpan">shrinkpack.fs.</span>unlink
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">unlink = function () {
+			var args = slice.call(arguments);
+
+			return when(condition()).withThis(this).then(function(exit) {
+				return when(f.apply(this, args))['finally'](exit);
+			});
+		}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+var fs = require('./fs');
+
+// public
+module.exports = deleteFile;
+
+// implementation
+function deleteFile(location) {
+return fs.<span class="apidocCodeKeywordSpan">unlink</span>(location)
+  .then(onSuccess, onError);
+
+function onSuccess() {
+  return location;
+}
+
+function onError() {
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.shrinkpack.fs.writeFile" id="apidoc.element.shrinkpack.fs.writeFile">
+        function <span class="apidocSignatureSpan">shrinkpack.fs.</span>writeFile
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">writeFile = function () {
+			var args = slice.call(arguments);
+
+			return when(condition()).withThis(this).then(function(exit) {
+				return when(f.apply(this, args))['finally'](exit);
+			});
+		}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+// public
+module.exports = getGraph;
+
+// implementation
+function getGraph(config) {
+console.log(chalk.blue('i rewriting ' + config.path.graph));
+return fs.<span class="apidocCodeKeywordSpan">writeFile</span>(config.path.graph, JSON.stringify(config.graph, null, 2), {encoding
+: 'utf8'})
+  .then(onSuccess, onError);
+
+function onSuccess() {
+  return config.path.graph;
+}
+
+function onError() {
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.shrinkpack.index" id="apidoc.module.shrinkpack.index">module shrinkpack.index</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.shrinkpack.index.analyse" id="apidoc.element.shrinkpack.index.analyse">
+        function <span class="apidocSignatureSpan">shrinkpack.index.</span>analyse
+        <span class="apidocSignatureSpan">(options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function init(options) {
+  return when({options: options, startTime: new Date()})
+    .then(getConfigWithPaths)
+    .then(getConfigWithGraph)
+    .then(handleOptionalDependencies)
+    .then(ensureBundleExists)
+    .then(getConfigWithNpmCacheContents)
+    .then(getConfigWithBundleContents)
+    .then(getConfigWithDependencies)
+    .then(getConfigWithUnusedDependencies)
+    .then(getConfigWithStats);
+
+  function getConfigWithPaths(config) {
+    return getPaths(config.options.directory)
+      .then(function (paths) {
+        return assign(config, {path: paths});
+      });
+  }
+
+  function getConfigWithGraph(config) {
+    return getGraph(config.path.graph)
+      .then(function (graph) {
+        return assign(config, {graph: graph});
+      });
+  }
+
+  function handleOptionalDependencies(config) {
+    return pruneOptionalDependencies(config)
+      .then(function (graph) {
+        return assign(config, {graph: graph});
+      });
+  }
+
+  function ensureBundleExists(config) {
+    return createBundleDirectory(config.path.shrinkpack)
+      .then(function () {
+        return config;
+      });
+  }
+
+  function getConfigWithNpmCacheContents(config) {
+    return readNpmCache(config.path.npmCache)
+      .then(function (npmCache) {
+        return assign(config, {npmCache: npmCache});
+      });
+  }
+
+  function getConfigWithBundleContents(config) {
+    return readBundle(config.path.shrinkpack)
+      .then(function (bundle) {
+        return assign(config, {bundle: bundle});
+      });
+  }
+
+  function getConfigWithDependencies(config) {
+    return getDependencies(config)
+      .then(function (deps) {
+        return assign(config, {deps: deps});
+      });
+  }
+
+  function getConfigWithUnusedDependencies(config) {
+    return getUnusedDependencies(config)
+      .then(function (unusedDependencies) {
+        return assign(config, {unusedDependencies: unusedDependencies});
+      });
+  }
+
+  function getConfigWithStats(config) {
+    return getStats(config)
+      .then(function (stats) {
+        return assign(config, {stats: stats});
+      });
+  }
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+1. Analyse the project and gather all the diffing information between the file system and the shrinkwrap.
+2. Use the diffing information to bring the file system in sync with the shrinkwrap.
+
+```js
+var shrinkpack = require('shrinkpack');
+
+shrinkpack.<span class="apidocCodeKeywordSpan">analyse</span>({ compress: false, directory: process.cwd(), keepOptional: false })
+  .then(data =&gt; shrinkpack.update(data));
+```
+
+Or to run `shrinkpack` in full, including all the additional logging that you see when using the CLI.
+
+```js
+var shrinkpack = require('shrinkpack');
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.shrinkpack.index.cli" id="apidoc.element.shrinkpack.index.cli">
+        function <span class="apidocSignatureSpan">shrinkpack.index.</span>cli
+        <span class="apidocSignatureSpan">(options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function runCli(options) {
+  return analyse(options)
+    .then(update, onFail)
+    .then(displaySummary, onFail)
+    .catch(onFail);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+```
+
+Or to run `shrinkpack` in full, including all the additional logging that you see when using the CLI.
+
+```js
+var shrinkpack = require('shrinkpack');
+
+shrinkpack.<span class="apidocCodeKeywordSpan">cli</span>({ compress: false, directory: process.cwd(), keepOptional: false })
+  .then(() =&gt; {});
+```
+
+## Target Problem
+
+On most projects I've worked on we've had a [Jenkins](http://jenkins-ci.org/) (or similiar)
+continuous integration environment, where we would run tests, analyse code, gather metrics, and
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.shrinkpack.index.update" id="apidoc.element.shrinkpack.index.update">
+        function <span class="apidocSignatureSpan">shrinkpack.index.</span>update
         <span class="apidocSignatureSpan">(config)</span>
         </a>
     </h2>
