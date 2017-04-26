@@ -1,6 +1,6 @@
 # npmdoc-shrinkpack
 
-#### api documentation for  [shrinkpack (v0.18.1)](https://github.com/JamieMason/shrinkpack)  [![npm package](https://img.shields.io/npm/v/npmdoc-shrinkpack.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-shrinkpack) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-shrinkpack.svg)](https://travis-ci.org/npmdoc/node-npmdoc-shrinkpack)
+#### basic api documentation for  [shrinkpack (v0.18.1)](https://github.com/JamieMason/shrinkpack)  [![npm package](https://img.shields.io/npm/v/npmdoc-shrinkpack.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-shrinkpack) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-shrinkpack.svg)](https://travis-ci.org/npmdoc/node-npmdoc-shrinkpack)
 
 #### Fast, resilient, reproducible builds with npm install.
 
